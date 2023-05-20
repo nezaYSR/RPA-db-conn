@@ -1,0 +1,14 @@
+# Ignore the db-data/db-conn/ directory and its contents
+db-data
+
+# Ignore any .env files
+.env
+
+# Ignore any files or directories starting with a dot
+.*
+
+# Ignore any log files
+*.log
+
+# Ignore any backup files
+*.bak

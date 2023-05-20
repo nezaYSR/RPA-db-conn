@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db-data/db-conn/:/var/lib/postgresql/data
+
+  mongodb_container:
+    image: 'mongo:4.2.16-bionic'
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: uipath
+      MONGO_INITDB_ROOT_USERNAME: uipath
+      MONGO_INITDB_ROOT_PASSWORD: uipath
+    volumes:
+      - ./db-data/mongo-db-conn/:/data/db
