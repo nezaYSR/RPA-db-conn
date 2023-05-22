@@ -54,6 +54,56 @@ CREATE TABLE BranchOutlet_Users (
     FOREIGN KEY (UsersId) REFERENCES Users(Id)
 );
 
+CREATE TABLE Services (
+	Id INT primary key,
+	ServiceName varchar(50) NOT NULL,
+	ServiceLink varchar(50),
+    ServiceDescription varchar(200),
+    ServiceType VARCHAR(20) NOT NULL,
+	Active BIT DEFAULT 1,
+	ReleaseDate DATETIME ,
+	ProcurementId INT FOREIGN KEY REFERENCES Procurement(Id);
+    CreatedOn DATETIME DEFAULT GETDATE(),
+	ModifiedOn DATETIME,
+	DeletedOn DATETIME,
+);
+
+CREATE TABLE Services_Users (
+	Id INT primary key,
+	ServiceId INT FOREIGN KEY REFERENCES Services(Id),
+	VendorId INT FOREIGN KEY REFERENCES Users(Id),
+    UserId INT FOREIGN KEY REFERENCES Users(Id),
+);
+
+ALTER TABLE Services
+ADD CONSTRAINT CHK_ServiceType CHECK (ServiceType IN ('outsource', 'maintenance', 'development', 'additional', 'installation', 'demolish'));
+
+CREATE TABLE Procurement (
+	Id INT primary key,
+	ServiceName varchar(50) NOT NULL,
+	ServiceLink varchar(50),
+    ServiceDescription varchar(200),
+    ServicePrice BIGINT,
+    ServiceType VARCHAR(20) NOT NULL,
+    ApprovalProgress VARCHAR(20) NOT NULL,
+    CreatedOn DATETIME DEFAULT GETDATE(),
+	ModifiedOn DATETIME,
+	DeletedOn DATETIME,
+	ApprovedOrRejectedOn DATETIME,
+);
+
+CREATE TABLE Procurement_Users (
+	Id INT primary key,
+	ServiceId INT FOREIGN KEY REFERENCES Procurement(Id),
+    VendorId INT FOREIGN KEY REFERENCES Users(Id),
+    UserId INT FOREIGN KEY REFERENCES Users(Id),
+);
+
+ALTER TABLE Procurement
+ADD CONSTRAINT CHK_ServiceType CHECK (ServiceType IN ('outsource', 'maintenance', 'development', 'additional', 'installation', 'demolish'));
+
+ALTER TABLE Procurement
+ADD CONSTRAINT CHK_ApprovalProgress CHECK (ApprovalProgress IN ('draft', 'awaiting_approval', 'approved', 'rejected'));
 
 
 -- Insert random data for five users
